@@ -1,6 +1,7 @@
 package br.insper.cotacao.stocks.service;
 
 import br.insper.cotacao.stocks.dto.StockDTO;
+import br.insper.cotacao.stocks.exception.StockNotFoundException;
 import br.insper.cotacao.stocks.model.Stock;
 import br.insper.cotacao.stocks.repository.StockRepository;
 import org.junit.jupiter.api.Assertions;
@@ -58,6 +59,17 @@ public class StockServiceTest {
         Assertions.assertEquals("PETR", resp.get(0).ticker());
     }
 
+
+    @Test
+    public void test_deleteStockShouldThrowStockNotFound() {
+
+        Mockito.when(stockRepository.existsById(1))
+                .thenReturn(false);
+
+        Assertions.assertThrows(StockNotFoundException.class
+                , () -> stockService.delete(1));
+
+    }
 
 
 }
