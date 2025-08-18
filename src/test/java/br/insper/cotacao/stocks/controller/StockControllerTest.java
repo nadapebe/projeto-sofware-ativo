@@ -53,7 +53,7 @@ public class StockControllerTest {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/stocks")
         )
-                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].ticker")
                         .value("PETR"));
 
