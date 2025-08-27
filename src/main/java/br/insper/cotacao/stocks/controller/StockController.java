@@ -25,12 +25,14 @@ public class StockController {
         return stockService.listAll();
     }
 
+    @GetMapping("/{ticker}")
+    public StockDTO getByTicker(@PathVariable String ticker) {
+        return stockService.getByTicker(ticker);
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id) {
         stockService.delete(id);
     }
 
-    // adcione as rotas para buscar uma ação GET /stocks/{id}
-    // e para editar o lastValue de uma ação PUT /stocks/{id}
-    // façaa o teste de 100% do codigo
 }
