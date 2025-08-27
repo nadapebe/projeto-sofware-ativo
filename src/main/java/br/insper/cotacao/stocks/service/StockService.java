@@ -5,8 +5,11 @@ import br.insper.cotacao.stocks.exception.StockNotFoundException;
 import br.insper.cotacao.stocks.model.Stock;
 import br.insper.cotacao.stocks.repository.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -17,6 +20,8 @@ public class StockService {
 
     public StockDTO create(StockDTO dto) {
         Stock stock = Stock.fromDTO(dto);
+        stock.setDateLastValue(LocalDate.now());
+        stock.setDateRegister(LocalDate.now());
         Stock saved = stockRepository.save(stock);
         return StockDTO.fromModel(saved);
     }
@@ -40,5 +45,11 @@ public class StockService {
             throw new StockNotFoundException("Stock not found");
         }
         stockRepository.deleteById(id);
+    }
+
+    public StockDTO getByTicker(String ticker) {
+        Stock stock = stockRepository.findByTicker(ticker)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return StockDTO.fromModel(stock);
     }
 }
